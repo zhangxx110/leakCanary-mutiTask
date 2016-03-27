@@ -22,4 +22,7 @@ ext {
   targetSdkVersion = compileSdkVersion
   buildToolsVersion = '23.0.1'
   javaVersion = JavaVersion.VERSION_1_7
+
+  GROUP = 'com.leakcanary.mutitask'
+  VERSION_NAME = "1.0-SNAPSHOT"
 }
