@@ -1,0 +1,112 @@
+version rootProject.ext.VERSION_NAME
+group rootProject.ext.GROUP
+
+buildscript {
+  repositories {
+    jcenter()
+  }
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+repositories {
+  jcenter()
+}
+
+dependencies {
+  testCompile 'junit:junit:4.12'
+}
+
+android {
+  compileSdkVersion rootProject.ext.compileSdkVersion
+  buildToolsVersion rootProject.ext.buildToolsVersion
+  defaultConfig {
+    minSdkVersion rootProject.ext.minSdkVersion
+    targetSdkVersion rootProject.ext.targetSdkVersion
+  }
+}
+def siteUrl = 'https://github.com/zhangxx110/leakCanary-mutiTask'      // Homepage URL of the library
+def gitUrl = 'https://github.com/zhangxx110/leakCanary-mutiTask'   // Git repository URL
+group = "bazhongren"                                          // Maven Group ID for the artifact
+
+install {
+  repositories.mavenInstaller {
+    // This generates POM.xml with proper parameters
+    pom {
+      project {
+        packaging 'aar'
+
+        // Add your description here
+        name 'leakcanary-mutitask-watcher'
+        description = 'leakcanary-mutitask-watcher'
+        url siteUrl
+
+        // Set your license
+        licenses {
+          license {
+            name 'The Apache Software License, Version 2.0'
+            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+          }
+        }
+        developers {
+          developer {
+            id 'bazhongren'
+            name 'zhangxiongxiang'
+            email 'zhangxx110@126.com'
+          }
+        }
+        scm {
+          connection gitUrl
+          developerConnection gitUrl
+          url siteUrl
+        }
+      }
+    }
+  }
+}
+
+task sourcesJar(type: Jar) {
+  from android.sourceSets.main.java.srcDirs
+  classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+  source = android.sourceSets.main.java.srcDirs
+  classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+  classifier = 'javadoc'
+  from javadoc.destinationDir
+}
+artifacts {
+  archives javadocJar
+  archives sourcesJar
+}
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+bintray {
+  user = properties.getProperty("bintray.user")
+  key = properties.getProperty("bintray.apikey")
+
+  configurations = ['archives']
+  pkg {
+    repo = "maven"
+    // it is the name that appears in bintray when logged
+    name = "leakcanary-mutitask-watcher"
+    websiteUrl = siteUrl
+    vcsUrl = gitUrl
+    licenses = ["Apache-2.0"]
+    publish = true
+    version {
+      gpg {
+        sign = true
+        passphrase = properties.getProperty("bintray.gpg.password")
+      }
+    }
+  }
+}

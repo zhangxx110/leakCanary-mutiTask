@@ -1,0 +1,14 @@
+apply plugin: 'com.android.application'
+
+dependencies {
+  debugCompile project(':leakcanary-mutitask-android')
+  releaseCompile project(':leakcanary-mutitask-android-no-op');
+}
+android {
+  compileSdkVersion rootProject.ext.compileSdkVersion
+  buildToolsVersion rootProject.ext.buildToolsVersion
+  defaultConfig {
+    minSdkVersion rootProject.ext.minSdkVersion
+    targetSdkVersion rootProject.ext.targetSdkVersion
+  }
+}
