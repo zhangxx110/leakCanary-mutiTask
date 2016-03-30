@@ -1,8 +1,12 @@
-# LeakCanary
+# LeakCanary-mutiTask
 
-A memory leak detection library for Android and Java.
+A memory leak detection library for Android and Java. LeakCanary  has the follow bugs,:
+-  Could not dump heap to hprof file , if previous analysis still in progress. 
+-  At the end of analysis, no prompt.
 
-*“A small leak will sink a great ship.”* - Benjamin Franklin
+LeakCanary-mutiTask  has the follow advantages:
+- put all watched Object  in task queue, and anaysis one by one.
+- Show toast only at the end of anaysis when one task finish.
 
 ![screenshot.png](assets/screenshot.png)
 
@@ -377,3 +381,4 @@ The name **LeakCanary** is a reference to the expression [canary in a coal mine]
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
+
